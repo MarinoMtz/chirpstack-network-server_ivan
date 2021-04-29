@@ -146,6 +146,12 @@ func (ctx *joinContext) logJoinRequestFramesCollected() error {
 func (ctx *joinContext) getDeviceOrTryRoaming() error {
 	var err error
 	ctx.Device, err = storage.GetDevice(ctx.ctx, storage.DB(), ctx.JoinRequestPayload.DevEUI, false)
+
+	log.WithFields(log.Fields{
+		"IVAN - DevEUI": ctx.DeviceSession.DevEUI,
+		"IVAN - JoinEUI": ctx.JoinRequestPayload.JoinEUI,
+	}).Info("IVAN - uplink/join : Testing log")
+
 	if err != nil {
 		if errors.Cause(err) == storage.ErrDoesNotExist {
 			log.WithFields(log.Fields{
@@ -518,6 +524,12 @@ func (ctx *joinContext) createDeviceActivation() error {
 		DevNonce:    ctx.JoinRequestPayload.DevNonce,
 		JoinReqType: lorawan.JoinRequestType,
 	}
+
+	//fmt.Println("IVAN - DevEUI",ctx.DeviceSession.DevEUI)
+	//fmt.Println("IVAN - JoinEUI",ctx.JoinRequestPayload.JoinEUI)
+	//fmt.Println("IVAN - JoinEUI",ctx.)
+
+
 
 	if err := storage.CreateDeviceActivation(ctx.ctx, storage.DB(), &da); err != nil {
 		return errors.Wrap(err, "create device-activation error")
